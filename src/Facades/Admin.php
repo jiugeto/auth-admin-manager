@@ -26,13 +26,13 @@ class Admin extends Facade
         return JiugeAdmin::store($request);
     }
 
-    public static function edit($id)
+    public static function edit(Request $request)
     {
-        return JiugeAdmin::edit($id);
+        return JiugeAdmin::edit($request->id);
     }
 
-    public static function update(Request $request,$id)
+    public static function update(Request $request)
     {
-        return JiugeAdmin::update($request,$id);
+        return JiugeAdmin::update($request);
     }
 }

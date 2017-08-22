@@ -2,6 +2,7 @@
 namespace JiugeTo\AuthAdminManager\Controllers;
 
 use App\Http\Controllers\Controller as BaseController;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 class Controller extends BaseController
 {
@@ -12,6 +13,7 @@ class Controller extends BaseController
     protected static $limit = 10;//每页显示的记录数
     protected static $prefix;
     protected static $view;
+    protected static $crumbs;
 
     /**
      * 返回错误格式

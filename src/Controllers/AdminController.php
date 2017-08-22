@@ -16,19 +16,26 @@ class AdminController extends Controller
     public function __construct()
     {
         self::$prefix = '/admin/admin';
-        self::$view = 'admin.admin';
     }
 
     public static function index()
     {
         $datas = AdminModel::paginate(self::$limit);
         $datas->limit = self::$limit;
-        return View::index();
+        $dataArr = array(
+            'prefix' => self::$prefix,
+            'view' => 'index',
+        );
+        return View::index($dataArr);
     }
 
     public static function create()
     {
-        return '';
+        $dataArr = array(
+            'prefix' => self::$prefix,
+            'view' => 'create',
+        );
+        return View::index($dataArr);
     }
 
     public static function store(Request $request)
@@ -41,12 +48,31 @@ class AdminController extends Controller
 
     public static function edit($id)
     {
-        return '';
+        $dataArr = array(
+            'prefix' => self::$prefix,
+            'view' => 'edit',
+            'data' => self::getModelById($id),
+        );
+        return View::index($dataArr);
     }
 
     public static function update(Request $request,$id)
     {
-        return '';
+        $model = self::getModelById($id);
+        $data = self::getData($request);
+        $data['updated_at'] = time();
+        AdminModel::where('id',$id)->update($data);
+        return redirect(self::$prefix);
+    }
+
+    public static function show($id)
+    {
+        $dataArr = array(
+            'prefix' => self::$prefix,
+            'view' => 'show',
+            'data' => self::getModelById($id),
+        );
+        return View::index($dataArr);
     }
 
     /**
@@ -64,7 +90,7 @@ class AdminController extends Controller
         return array(
             'name' => $request->name,
             'role' => $request->role,
-            'password' => Hash::make('123456'),
+            'password' => Hash::make('123456'),//默认密码
         );
     }
 
