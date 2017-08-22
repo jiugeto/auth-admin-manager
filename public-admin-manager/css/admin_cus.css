@@ -1,0 +1,294 @@
+/*======系统后台样式调整 admin_cus======*/
+
+
+.icon { width:15px; }
+.list_center { text-align:center; }
+.pic_size_small { width:30px; }
+
+
+/*=======action层叠列表========*/
+.action_pos {
+    float:right;
+}
+.action_span {
+    padding:5px 10px;
+    border:1px solid lightgray;
+    cursor:pointer;
+}
+.action_change { margin:10px; }
+.action_sub {
+    margin:10px;
+    padding:10px;
+    width:40%;
+    border:1px solid lightgray;
+    background:#f5f5f5;
+    float:left;
+}
+.action_sub_btn {
+    padding:3px 10px;
+    border:1px solid lightgray;
+    background:#f0f0f0;
+}
+.action_blue {
+    color:#0e72d2;
+}
+.action_red {
+    color:#dc504b;
+}
+.clear {
+    clear:both;
+}
+.action_border {
+    border-bottom:0;
+}
+
+
+/*=== 返回键 back ===*/
+button.backbtn {
+    padding:5px 20px;
+    /*border-radius:3px;*/
+    color:white;
+    font-family:'微软雅黑';
+    font-size:20px;
+    cursor:pointer;
+    border:1px solid #0e72d2;
+    background:#0e72d2;
+}
+
+
+/*=== 增加 increase ===*/
+.increase,.reduce {
+    padding:2px 5px;
+    font-size:12px;
+    border:1px solid lightgrey;
+}
+a:hover.increase,a:hover.reduce { background:white; }
+/*=== 增加 reduce ===*/
+
+
+/*=== 系统后台详情页面的内容 ===*/
+.admin_show_con {
+    padding:5px 10px;
+    width:400px;height:200px;
+    border:1px solid lightgrey;
+    overflow:auto;
+}
+.admin_show_img_size { width:500px; }
+.textarea_show {
+    border:1px solid ghostwhite;
+    background:0;
+    overflow:auto;
+    outline:none;
+    resize:none;
+}
+/*=== 系统后台详情页面的内容 ===*/
+
+
+/*=== 系统后台添加修改页面 ===*/
+.admin_border {
+    padding:5px;
+    border:1px dashed lightgrey;
+}
+.admin_yulan,.admin_yulan2,.admin_yulan3,.admin_yulan4,.admin_yulan5,.admin_yulan6 {
+    margin-left:5px;
+    width:100px;
+    height:25px;
+    background:black;
+    float:right;
+}
+.switch_pic {
+    width:100%;
+    background:#f0f0f0;
+    text-align:center;
+    cursor:pointer;
+}
+.switch_pic a { padding:5px 250px; }
+/*=== 系统后台添加修改页面 ===*/
+
+
+/*系统后台企业访问日志*/
+.btnClick { color:orangered;background:lightgrey; }
+
+
+/*系统后台产品在线创作样式*/
+.admin_out {
+    margin:0 10px;
+    width:730px;
+    float:left;
+}
+.admin_out .title {
+    padding:5px 0;
+    width:720px;
+    color:lightgrey;
+    text-align:center;
+    background:black;
+}
+.admin_out iframe {
+    border:2px solid black;
+    border-bottom:0;
+    border-top:0;
+}
+.admin_out a #edit {
+    margin-top:-6px;
+    padding:2px 0;
+    width:720px;
+    color:grey;
+    text-align:center;
+    background:black;
+}
+.admin_out a:hover #edit {
+    color:white;
+    background:darkred;
+}
+/*时间面板*/
+.admin_out .timetab {
+    margin:5px 0;
+    width:720px;
+    background:#fafafa;
+}
+.admin_out .tabt {
+    margin:0; padding:0;
+    text-align:center;
+    border:1px solid lightgrey;
+    background:gainsboro;
+    border-bottom:0;
+}
+.admin_out .timetab .title {
+    padding:0;
+    height:30px;
+    color:#646464;
+    border:1px solid lightgrey;
+    background:#e6e6e6;
+    clear:both;
+}
+.admin_out .timetab .title .tab {
+    padding:2px 5px; padding-bottom:1px;
+    width:120px;
+    text-align:center;
+    border-right:1px solid lightgrey;
+    border-bottom:1px solid lightgrey;
+    background:#f0f0f0;
+    cursor:pointer;
+    float:left;
+}
+.admin_out .timetab .layerlist { clear:both; }
+.admin_out .timetab .layerlist .layer {
+    height:200px;
+    color:grey;
+    border:1px solid lightgrey;
+    border-top:0;
+    background:#fcfcfc;
+    overflow:auto;
+    float:left;
+}
+.admin_out .timetab .layerlist .layer td { border-bottom:1px dotted #e6e6e6; }
+.admin_out .timetab input,.admin_out .timetab select {
+    padding:0 5px;
+    width:50px; height:20px;
+    border:1px solid lightgrey;
+}.admin_out .timetab select {
+    width:100px; height:25px;
+ }
+.admin_out .timetab .layerlist p { margin:0; }
+.admin_out .timetab .layerlist .set {
+    padding:0 5px;
+    width:200px;
+}
+.admin_out .timetab .layerlist .attr {
+    padding:0 5px;
+    width:520px;
+}
+.timetab .layerlist table .keyval {
+    margin:2px 5px;
+    float:left;
+}
+.timetab .layerlist table .left {
+    width:40px;
+    border-top-left-radius:3px;
+    border-bottom-left-radius:3px;
+}
+.timetab .layerlist table .right {
+    width:50px;
+    border-top-right-radius:3px;
+    border-bottom-right-radius:3px;
+}
+.timetab .layerlist .submit {
+    margin:10px 40px;
+    padding:2px 15px;
+}
+.addTimeTab {
+    margin-top:-5px;
+    width:720px;
+    border:1px solid lightgrey;
+    border-top:0;
+    text-align:center;
+    color:grey;
+    background:#fafafa;
+    cursor:pointer;
+}
+div:hover.addTimeTab { color:orangered; }
+.addlayer {
+    padding:2px 10px;
+    width:720px;
+    border:1px solid lightgrey;
+    border-top:0;
+    color:grey;
+    background:#fafafa;
+}
+.addlayer input,.addlayer select {
+    padding:0 10px;
+    width:150px;
+    border:1px solid lightgrey;
+}
+/*属性菜单*/
+.admin_menu {
+    margin:5px 0;
+    width:272px;
+    color:#646464;
+    border:1px solid lightgrey;
+    background:#fafafa;
+    float:left;
+}
+.admin_menu input.t,.admin_menu select {
+    padding:0px 5px;
+    width:100px; height:25px;
+    border:1px solid lightgrey;
+}
+.admin_menu .title {
+    width:270px;
+    text-align:center;
+    background:#e6e6e6;
+    cursor:pointer;
+}
+.admin_menu .con { padding:0 5px; }
+.admin_menu .con .edit_con,.admin_menu .con .new_con {
+    margin:5px 0;
+    padding:0 5px;
+    padding-bottom:5px;
+    border:1px solid lightgrey;
+}
+.admin_menu .con .edit_con b,.admin_menu .con .new_con b {
+    padding:0 20px;
+    border-right:1px dashed lightgrey;
+    border-bottom:1px dashed lightgrey;
+}
+.admin_menu .con .con_one {
+    padding:0 20px;  padding-bottom:2px;
+    border-bottom:1px dotted #e6e6e6;
+}
+.admin_menu .con .submit {
+    margin:5px 70px;
+    padding:2px 15px;
+}
+
+
+/*=== 列表的select检索样式 ===*/
+.list_select {
+    margin:0px 30px;
+    color:grey;
+}
+.list_select select {
+    margin-top:-3px;
+    padding:2px 10px;
+    border:1px solid lightgrey;
+}

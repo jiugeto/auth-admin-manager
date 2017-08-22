@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "JiugeTo\\AuthServerLaravel5\\": "src/"
+            "JiugeTo\\AuthAdminManager\\": "src/"
         }
     }
 }
