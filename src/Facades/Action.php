@@ -3,7 +3,6 @@ namespace JiugeTo\AuthAdminManager\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use JiugeTo\AuthAdminManager\Controllers\ActionController as JiugeAction;
-use Illuminate\Support\Facades\Input;
 
 class Action extends Facade
 {
@@ -23,16 +22,21 @@ class Action extends Facade
 
     public static function store()
     {
-        return JiugeAction::store(Input::all());
+        return JiugeAction::store();
     }
 
     public static function edit()
     {
-        return JiugeAction::edit(Input::get('id'));
+        return JiugeAction::edit();
     }
 
     public static function update()
     {
-        return JiugeAction::update(Input::all(),Input::get('id'));
+        return JiugeAction::update();
+    }
+
+    public static function show()
+    {
+        return JiugeAction::show();
     }
 }

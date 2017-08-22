@@ -20,17 +20,38 @@ class ActionController extends Controller
         array(1,'路由','url','请求路由',8),
         array(1,'方法','action','方法',1),
         array(5,'父级','pid','父级',6),
+        array(5,'左侧显示','left_show','左侧显示',6),
+    );
+    protected static $formIndexArr = array(
+        'name' => '操作名称',
+        'namespace' => '命名空间',
+        'controller' => '控制器',
+        'url' => '路由',
+        'action' => '方法',
+        'parentName' => '父级名称',
+        'leftShowName' => '左侧是否显示',
+        'createTime' => '创建时间',
     );
 
     public static function index()
     {
         $shares = self::getShare();
-        $datas = ActionModel::paginate(self::$limit);
-        $datas->limit = self::$limit;
+        $datas = array();
+        $models = ActionModel::paginate(self::$limit);
+        if (!$models->total()) {
+            $datas = array(); $total = 0;
+        } else {
+            foreach ($models as $k=>$model) {
+                $datas[$k] = self::getArrByModel($model);
+            }
+            $total = $models->total();
+        }
+//        $datas->limit = self::$limit;
         $dataArr = array(
             'prefix' => $shares['prefix'],
             'crumbs' => $shares['crumbs'],
             'datas' => $datas,
+            'indexArr' => self::$formIndexArr,
             'view' => 'index',
         );
         return View::index($dataArr);
@@ -45,6 +66,7 @@ class ActionController extends Controller
             'selArr' => self::$formElementArr,
             'optionArr' => array(
                 'pid' => self::getParents(),
+                'left_show' => self::getLeftShows(),
             ),
             'view' => 'create',
         );
@@ -54,14 +76,16 @@ class ActionController extends Controller
     public static function store()
     {
         $shares = self::getShare();
-        $data = self::getData($request);
+        $data = self::getData();
         $data['created_at'] = time();
+//        dd($data);
         ActionModel::create($data);
         return redirect($shares['prefix']);
     }
 
-    public static function edit($id)
+    public static function edit()
     {
+        dd(Input::all());
         $shares = self::getShare();
         $dataArr = array(
             'prefix' => $shares['prefix'],
@@ -69,31 +93,32 @@ class ActionController extends Controller
             'selArr' => self::$formElementArr,
             'optionArr' => array(
                 'pid' => self::getParents(),
+                'left_show' => self::getLeftShows(),
                 ),
-            'data' => self::getModelById($id),
+            'data' => self::getModelById(Input::get('id')),
             'view' => 'edit',
         );
         return View::index($dataArr);
     }
 
-    public static function update(Request $request,$id)
+    public static function update()
     {
         $shares = self::getShare();
-        $model = self::getModelById($id);
-        $data = self::getData($request);
+        $model = self::getModelById(Input::get('id'));
+        $data = self::getData();
         $data['updated_at'] = time();
-        ActionModel::where('id',$id)->update($data);
+        ActionModel::where('id',Input::get('id'))->update($data);
         return redirect($shares['prefix']);
     }
 
-    public static function show($id)
+    public static function show()
     {
         $shares = self::getShare();
         $dataArr = array(
             'prefix' => $shares['prefix'],
             'crumbs' => $shares['crumbs'],
             'view' => 'show',
-            'data' => self::getModelById($id),
+            'data' => self::getModelById(Input::get('id')),
         );
         return View::index($dataArr);
     }
@@ -101,20 +126,21 @@ class ActionController extends Controller
     /**
      * 收集、验证
      */
-    public static function getData(Request $request)
+    public static function getData()
     {
-        if (!$request->name || !$request->namespace || !$request->controller ||
-            !$request->url || !$request->action) {
+        $data = Input::all();
+        if (!$data['name'] || !$data['namespace'] || !$data['controller'] ||
+            !$data['url'] || !$data['action']) {
             return array('code'=> -1, 'msg'=> '管理员必填！');
         }
         return array(
-            'name' => $request->name,
-            'namespace' => $request->namespace,
-            'controller' => $request->controller,
-            'url' => $request->url,
-            'action' => $request->action,
-            'pid' => $request->pid,
-            'left_show' => $request->left_show,
+            'name' => $data['name'],
+            'namespace' => $data['namespace'],
+            'controller' => $data['controller'],
+            'url' => $data['url'],
+            'action' => $data['action'],
+            'pid' => $data['pid'],
+            'left_show' => $data['left_show'],
         );
     }
 
@@ -141,7 +167,10 @@ class ActionController extends Controller
             'url' => $model->url,
             'action' => $model->action,
             'pid' => $model->pid,
+            'parentName' => $model->getParentName(),
             'left_show' => $model->left_show,
+            'leftShowName' => $model->getLeftShowName(),
+            'createTime' => $model->createTime(),
         );
     }
 
@@ -173,5 +202,14 @@ class ActionController extends Controller
             }
         }
         return $parentArr;
+    }
+
+    /**
+     * 获取是否显示
+     */
+    public static function getLeftShows()
+    {
+        $model = new ActionModel();
+        return $model['leftShows'];
     }
 }

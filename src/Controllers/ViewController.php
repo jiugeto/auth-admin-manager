@@ -174,6 +174,7 @@ class ViewController extends Controller
         $prefix = $dataArr['prefix'];
         $crumbs = $dataArr['crumbs'];
         $datas = $dataArr['datas'];
+        $indexArr = $dataArr['indexArr'];
         $html = '';
         $html .= '<div class="am-cf admin-main">';
         $html .= '<div class="admin-sidebar am-offcanvas" id="admin-offcanvas">';
@@ -191,16 +192,36 @@ class ViewController extends Controller
         //列表
         $html .= '<div class="am-g" id="list"><div class="am-u-sm-12">';
         $html .= '<table class="am-table am-table-striped am-table-hover table-main">';
-        $html .= '<thead><tr><th class="table-check"><input type="checkbox"/></th><th class="table-id">ID</th><th class="table-title">名称</th><th class="table-type">创建时间</th><th class="table-date am-hide-sm-only">操作</th></tr></thead>';
+        //标题栏
+        $html .= '<thead>';
+//        $html .= '<tr><th class="table-check"><input type="checkbox"/></th><th class="table-id">ID</th><th class="table-title">名称</th><th class="table-type">创建时间</th><th class="table-date am-hide-sm-only">操作</th></tr>';
+        $html .= '<tr><th class="table-check"><input type="checkbox"/></th>';
+        foreach ($indexArr as $key=>$value) {
+            $html .= '<th class="table-type">'.$value.'</th>';
+        }
+        $html .= '<th class="table-type">创建时间</th><th class="table-date am-hide-sm-only">操作</th></tr>';
+        $html .= '</thead>';
         $html .= '<tbody>';
-//        if (count($datas)) {}
-        $html .= '<tr>';
-        $html .= '<td class="am-hide-sm-only"><input type="checkbox" /></td>';
-        $html .= '<td class="am-hide-sm-only"></td>';
-        $html .= '<td class="am-hide-sm-only"></td>';
-        $html .= '<td class="am-hide-sm-only"></td>';
-        $html .= '<td class="am-hide-sm-only"><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><a href="javascript:;"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="'.self::$pub.'images/show.png" class="icon"> 查看</button></a></div></div></td>';
-        $html .= '</tr>';
+        if (count($datas)) {
+            foreach ($datas as $data) {
+                $html .= '<tr>';
+                $html .= '<td class="am-hide-sm-only"><input type="checkbox" /></td>';
+                foreach ($indexArr as $k=>$v) {
+                    $html .= '<td class="am-hide-sm-only">'.$data[$k].'</td>';
+                }
+                $html .= '<td class="am-hide-sm-only">'.$data['createTime'].'</td>';
+                $html .= '<td class="am-hide-sm-only"><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><a href="'.$prefix.'/show?id='.$data['id'].'"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="'.self::$pub.'images/show.png" class="icon"> 查看</button></a><a href="javascript:;" onclick="getEdit('.$data['id'].')"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="'.self::$pub.'images/show.png" class="icon"> 编辑</button></a></div></div></td>';
+                $html .= '</tr>';
+            }
+        } else {
+            $html .= '<tr>';
+            $html .= '<td class="am-hide-sm-only"><input type="checkbox" /></td>';
+            $html .= '<td class="am-hide-sm-only">id</td>';
+            $html .= '<td class="am-hide-sm-only">名称</td>';
+            $html .= '<td class="am-hide-sm-only">时间</td>';
+            $html .= '<td class="am-hide-sm-only"><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><a href="javascript:;"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="'.self::$pub.'images/show.png" class="icon"> 查看</button></a></div></div></td>';
+            $html .= '</tr>';
+        }
         $html .= '</tbody>';
         $html .= '</table>';
         $html .= '</div></div>';

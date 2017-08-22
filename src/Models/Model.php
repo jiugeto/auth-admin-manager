@@ -10,4 +10,14 @@ class Model extends BaseModel
      */
 
     public $timestamps = false;
+
+    public function createTime()
+    {
+        return $this->created_at ? date('Y-m-d H:i',$this->created_at) : '';
+    }
+
+    public function updateTime()
+    {
+        return $this->updated_at ? date('Y-m-d H:i',$this->updated_at) : '';
+    }
 }
