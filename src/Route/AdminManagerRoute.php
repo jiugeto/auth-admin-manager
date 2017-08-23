@@ -34,9 +34,7 @@ Route::group(['prefix'=>'admin'],function(){
     Route::post('action/modify',function(){ return Action::update(); });
     //权限分配
     Route::get('roleaction',function(){ return RoleAction::index(); });
-    Route::get('roleaction/create',function(){ return RoleAction::create(); });
     Route::post('roleaction',function(){ return RoleAction::store(); });
     Route::get('roleaction/show',function(){ return RoleAction::show(); });
-    Route::get('roleaction/edit',function(){ return RoleAction::edit(); });
-    Route::post('roleaction/modify',function(){ return RoleAction::update(); });
+    Route::get('roleaction/check',function(){ return RoleAction::check(); });
 });

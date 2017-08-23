@@ -11,4 +11,16 @@ class RoleActionModel extends Model
     protected $fillable = [
         'id','role','action','del','created_at','del_time',
     ];
+
+    public function getRoleName()
+    {
+        $model = RoleModel::find($this->role);
+        return $model ? $model->name : '';
+    }
+
+    public function getActionName()
+    {
+        $model = ActionModel::find($this->role);
+        return $model ? $model->name : '';
+    }
 }

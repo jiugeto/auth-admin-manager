@@ -44,7 +44,6 @@ class RoleController extends Controller
         $dataArr = array(
             'prefix' => $shares['prefix'],
             'crumbs' => $shares['crumbs'],
-            'leftMenus' => self::getLeftMenus(),
             'datas' => $datas,
             'indexArr' => self::$formIndexArr,
             'view' => 'index',
@@ -58,7 +57,6 @@ class RoleController extends Controller
         $dataArr = array(
             'prefix' => $shares['prefix'],
             'crumbs' => $shares['crumbs'],
-            'leftMenus' => self::getLeftMenus(),
             'selArr' => self::$formElementArr,
             'optionArr' => array(),
             'view' => 'create',

@@ -15,28 +15,13 @@ class RoleAction extends Facade
         return JiugeRoleAction::index();
     }
 
-    public static function create()
-    {
-        return JiugeRoleAction::create();
-    }
-
-    public static function store()
-    {
-        return JiugeRoleAction::store();
-    }
-
-    public static function edit()
-    {
-        return JiugeRoleAction::edit();
-    }
-
-    public static function update()
-    {
-        return JiugeRoleAction::update();
-    }
-
     public static function show()
     {
         return JiugeRoleAction::show();
+    }
+
+    public static function check()
+    {
+        return JiugeRoleAction::check();
     }
 }

@@ -158,7 +158,9 @@ class ViewController extends Controller
         //面包屑
         $html .= '<div class="am-g"><div class="am-cf am-padding"><div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"> '.$crumbs['module'].'</strong> / <strong class="am-text-primary am-text-lg"> '.$crumbs['func']['name'].'</strong></div></div></div><hr/>';
         //菜单
-        $html .= '<div class="am-g"><div class="am-u-sm-12 am-u-md-6"><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><a href="'.$prefix.'/create"><button type="button" class="am-btn am-btn-default"> 添加'.$crumbs['func']['name'].' </button></a></div></div></div>';
+        if ($prefix != '/admin/roleaction') {
+            $html .= '<div class="am-g"><div class="am-u-sm-12 am-u-md-6"><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><a href="' . $prefix . '/create"><button type="button" class="am-btn am-btn-default"> 添加' . $crumbs['func']['name'] . ' </button></a></div></div></div>';
+        }
         //列表
         $html .= '<div class="am-g" id="list"><div class="am-u-sm-12">';
         $html .= '<table class="am-table am-table-striped am-table-hover table-main">';
@@ -176,12 +178,15 @@ class ViewController extends Controller
             foreach ($datas as $data) {
                 $html .= '<tr>';
                 $html .= '<td class="am-hide-sm-only"><input type="checkbox" /></td>';
-                foreach ($indexArr as $k=>$v) {
-                    $html .= '<td class="am-hide-sm-only">'.$data[$k].'</td>';
+                foreach ($indexArr as $k => $v) {
+                    $html .= '<td class="am-hide-sm-only">' . $data[$k] . '</td>';
                 }
                 $html .= '<td class="am-hide-sm-only"><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs">';
-                $html .= '<a href="'.$prefix.'/show?id='.$data['id'].'"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="'.self::getPubPath().'images/show.png" class="icon"> 查看</button></a> ';
-                $html .= '<a href="'.$prefix.'/edit?id='.$data['id'].'"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="'.self::getPubPath().'images/show.png" class="icon"> 编辑</button></a>';
+                $html .= '<a href="' . $prefix . '/show?id=' . $data['id'] . '"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="' . self::getPubPath() . 'images/show.png" class="icon"> 查看</button></a> ';
+                if ($prefix != '/admin/roleaction') {
+                    $html .= '<a href="' . $prefix . '/edit?id=' . $data['id'] . '"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="' . self::getPubPath() . 'images/show.png" class="icon"> 编辑</button></a>';
+                } else {
+                }
                 $html .= '</div></div></td>';
                 $html .= '</tr>';
             }
