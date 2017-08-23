@@ -24,3 +24,5 @@ php artisan optimize
 - 假如默认更新的不是最新版，则会出错；那么，直接下载包，解压后，放在下面vendor/下面
 
 ## 使用方式
+- 在路由中加上：
+include_once('../packages/jiugeto/auth-admin-manager/src/Route/AdminManagerRoute.php');
