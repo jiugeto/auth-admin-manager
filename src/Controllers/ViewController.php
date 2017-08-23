@@ -187,6 +187,9 @@ class ViewController extends Controller
                     $html .= '<a href="' . $prefix . '/edit?id=' . $data['id'] . '"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="' . self::getPubPath() . 'images/show.png" class="icon"> 编辑</button></a>';
                 } else {
                 }
+                if ($prefix=='/admin/admin') {
+                    $html .= ' <a href="' . $prefix . '/pwd?id=' . $data['id'] . '"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="' . self::getPubPath() . 'images/show.png" class="icon"> 设置密码</button></a>';
+                }
                 $html .= '</div></div></td>';
                 $html .= '</tr>';
             }
@@ -270,6 +273,7 @@ class ViewController extends Controller
         $selArr = $dataArr['selArr'];
         $optionArr = $dataArr['optionArr'];
         $data = $dataArr['data'];
+        $footer = config('jiuge.footer');
         $html = '';
         $html .= '<div class="am-cf admin-main">';
         $html .= '<div class="admin-sidebar am-offcanvas" id="admin-offcanvas">';
@@ -299,7 +303,7 @@ class ViewController extends Controller
         $html .= '</div>';
         $html .= '</div>';
         //页脚
-        $html .= '<footer><hr/><p class="am-padding-left list_center">你的页脚信息。</p></footer>';
+        $html .= '<footer><hr/><p class="am-padding-left list_center">'.$footer.'</p></footer>';
         $html .= '</div>';
         $html .= '</div>';
         $html .= '';

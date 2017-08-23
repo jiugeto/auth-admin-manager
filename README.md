@@ -25,4 +25,6 @@ php artisan optimize
 
 ## 使用方式
 - 在路由中加上：
-include_once('../packages/jiugeto/auth-admin-manager/src/Route/AdminManagerRoute.php');
+`include_once('../vendor/jiugeto/auth-admin-manager/src/Route/AdminManagerRoute.php');`
+- 将 /vendor/jiugeto/auth-admin-manager/config/jiuge.php 拷贝到 /config/ 下面
+- 将 /vendor/jiugeto/auth-admin-manager/public-admin-manager 拷贝到 /public 下面

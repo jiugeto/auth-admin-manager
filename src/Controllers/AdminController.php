@@ -124,6 +124,70 @@ class AdminController extends Controller
         return View::index($dataArr);
     }
 
+    public static function pwd()
+    {
+        $shares = self::getShare();
+        $prefix = $shares['prefix'];
+        $crumbs = $shares['crumbs'];
+        $data = self::getModelById(Input::get('id'));
+        $footer = config('jiuge.footer');
+        $html = '';
+        $html .= View::mainTop();
+        $html .= View::top();
+        $html .= '<div class="am-cf admin-main">';
+        $html .= '<div class="admin-sidebar am-offcanvas" id="admin-offcanvas">';
+        $html .= '<div class="am-offcanvas-bar admin-offcanvas-bar">';
+        $html .= View::leftMenu(self::getLeftMenus());
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '<div class="admin-content">';
+        //面包屑
+        $html .= '<div class="am-g"><div class="am-cf am-padding"><div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"> '.$crumbs['module'].'</strong> / <strong class="am-text-primary am-text-lg"> '.$crumbs['func']['name'].'</strong></div></div></div><hr/>';
+        //管理员信息
+        $html .= '<div class="am-g">';
+        $html .= '<div class="am-u-sm-12 am-u-md-4 am-u-md-push-8"><div class="am-panel am-panel-default"><div class="am-panel-bd"><div class="user-info"><p class="user-info-order">管理员名称：<strong>管理员</strong></p><p class="user-info-order">所在角色组：<strong>角色</strong></p><p class="user-info-order">最近登陆时间：<strong>时间</strong></p></div></div></div></div>';
+        //拼接表单
+        $html .= "<div class=\"am-u-sm-12 am-u-md-8 am-u-md-pull-4\">";
+        $html .= '<form action="'.$prefix.'/setpwd?id='.$data['id'].'" class="am-form" method="POST" enctype="multipart/form-data">';
+        $html .= csrf_field();
+        $html .= '<input type="hidden" name="_method" value="POST"/>';
+        $html .= '<input type="hidden" name="id" value="'.$data['id'].'"/>';
+        $html .= '<fieldset>';
+        $html .= '<label>原密码</label><input type="text" name="pwd" placeholder="原密码" pattern="^[0-9a-zA-Z]{5,20}$" required/>';
+        $html .= '<label>新密码</label><input type="password" name="pwd2" placeholder="新密码" pattern="^[0-9a-zA-Z]{5,20}$" required/><br>';
+        $html .= '<button type="button" class="am-btn am-btn-primary" onclick="history.go(-1);">返回</button> <button type="submit" class="am-btn am-btn-primary">保存修改</button>';
+        $html .= '</fieldset>';
+        $html .= '</form>';
+        $html .= '</div>';
+        $html .= '</div>';
+        //页脚
+        $html .= '<footer><hr/><p class="am-padding-left list_center">'.$footer.'</p></footer>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= View::mainBottom();
+        $html .= '';
+        return $html;
+    }
+
+    public static function setPwd()
+    {
+        $data = Input::all();
+        $model = AdminModel::find($data['id']);
+        if (!$model) {
+            echo "<script>alert('记录不存在！');history.go(-1);</script>";exit;
+        }
+        if (!(Hash::check($data['pwd'],$model->password))) {
+            echo "<script>alert('密码错误！');history.go(-1);</script>";exit;
+        }
+        AdminModel::where('id',$data['id'])
+            ->update(array(
+                'password' => Hash::make($data['pwd2']),
+                'updated_at' => time(),
+            ));
+        $shares = self::getShare();
+        return redirect($shares['prefix']);
+    }
+
     /**
      * 收集、验证
      */

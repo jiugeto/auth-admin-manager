@@ -39,4 +39,14 @@ class Admin extends Facade
     {
         return JiugeAdmin::show();
     }
+
+    public static function pwd()
+    {
+        return JiugeAdmin::pwd();
+    }
+
+    public static function setPwd()
+    {
+        return JiugeAdmin::setPwd();
+    }
 }

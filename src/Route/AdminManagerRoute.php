@@ -5,6 +5,7 @@
  */
 
 
+use JiugeTo\AuthAdminManager\Facades\Login;
 use JiugeTo\AuthAdminManager\Facades\Admin;
 use JiugeTo\AuthAdminManager\Facades\Action;
 use JiugeTo\AuthAdminManager\Facades\Role;
@@ -18,12 +19,15 @@ Route::group(['prefix'=>'admin'],function(){
 
 Route::group(['prefix'=>'admin'],function(){
     //管理员路由
+    Route::get('/',function(){ return Admin::index(); });
     Route::get('admin',function(){ return Admin::index(); });
     Route::get('admin/create',function(){ return Admin::create(); });
     Route::post('admin',function(){ return Admin::store(); });
     Route::get('admin/show',function(){ return Admin::show(); });
     Route::get('admin/edit',function(){ return Admin::edit(); });
     Route::post('admin/modify',function(){ return Admin::update(); });
+    Route::get('admin/pwd',function(){ return Admin::pwd(); });
+    Route::post('admin/setpwd',function(){ return Admin::setPwd(); });
     //角色路由
     Route::get('role',function(){ return Role::index(); });
     Route::get('role/create',function(){ return Role::create(); });
