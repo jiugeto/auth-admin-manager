@@ -9,7 +9,16 @@
 - `source 项目的绝对路径/vendor/jiugeto/auth-server-laravel5/src/DataBases/auth_manager.sql;`
 
 ## 方法一：Composer安装
-- 在composer.json的require中加上一行：`"jiugeto/auth-admin-manager" : "dev-master"`
+- 安装_ide_helper.php，在项目根目录，命令行执行：`composer require barryvdh/laravel-ide-helper`
+- 然后在config/app.php的providers中添加：Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+- 在项目根目录，命令行执行：
+```sql
+php artisan clear-compiled
+php artisan ide-helper:generate
+php artisan optimize
+```
+- 安装jiugeto/auth-admin-manager：
+- 在composer.json的require中加上：`"jiugeto/auth-admin-manager" : "dev-master"`
 - 然后在项目中，命令行执行：`composer update`
 ## 方法二：手动下载安装
 - 假如默认更新的不是最新版，则会出错；那么，直接下载包，解压后，放在下面vendor/下面

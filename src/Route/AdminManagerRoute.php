@@ -11,6 +11,12 @@ use JiugeTo\AuthAdminManager\Facades\Role;
 use JiugeTo\AuthAdminManager\Facades\RoleAction;
 
 Route::group(['prefix'=>'admin'],function(){
+    Route::get('login',function(){ return Login::login(); });
+    Route::post('dologin',function(){ return Login::doLogin(); });
+    Route::get('logout',function(){ return Login::doLogout(); });
+});
+
+Route::group(['prefix'=>'admin'],function(){
     //管理员路由
     Route::get('admin',function(){ return Admin::index(); });
     Route::get('admin/create',function(){ return Admin::create(); });
