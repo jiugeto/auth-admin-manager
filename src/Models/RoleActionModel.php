@@ -1,7 +1,7 @@
 <?php
 namespace JiugeTo\AuthAdminManager\Models;
 
-class RoleAdminModel extends Model
+class RoleActionModel extends Model
 {
     /**
      * 角色、操作关联

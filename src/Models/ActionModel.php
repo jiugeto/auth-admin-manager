@@ -32,6 +32,24 @@ class ActionModel extends Model
     public function getParentName()
     {
         $model = ActionModel::find($this->pid);
-        return $model ? $model->name : '';
+        return $model ? $model->name : '顶级操作';
+    }
+
+    /**
+     * 获取所有子操作
+     */
+    public function getSubsByPid()
+    {
+        $subArr = array();
+        $models = ActionModel::where('pid',$this->id)
+            ->where('del',0)
+            ->get();
+        if (!count($models)) { return $subArr; }
+        foreach ($models as $k=>$model) {
+            $subArr[$k]['id'] = $model->id;
+            $subArr[$k]['name'] = $model->name;
+            $subArr[$k]['url'] = $model->url;
+        }
+        return $subArr;
     }
 }

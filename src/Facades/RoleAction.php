@@ -2,41 +2,41 @@
 namespace JiugeTo\AuthAdminManager\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use JiugeTo\AuthAdminManager\Controllers\AdminController as JiugeAdmin;
+use JiugeTo\AuthAdminManager\Controllers\RoleActionController as JiugeRoleAction;
 
-class Admin extends Facade
+class RoleAction extends Facade
 {
     /**
-     * 管理员操作
+     * 操作
      */
 
     public static function index()
     {
-        return JiugeAdmin::index();
+        return JiugeRoleAction::index();
     }
 
     public static function create()
     {
-        return JiugeAdmin::create();
+        return JiugeRoleAction::create();
     }
 
     public static function store()
     {
-        return JiugeAdmin::store();
+        return JiugeRoleAction::store();
     }
 
     public static function edit()
     {
-        return JiugeAdmin::edit();
+        return JiugeRoleAction::edit();
     }
 
     public static function update()
     {
-        return JiugeAdmin::update();
+        return JiugeRoleAction::update();
     }
 
     public static function show()
     {
-        return JiugeAdmin::show();
+        return JiugeRoleAction::show();
     }
 }

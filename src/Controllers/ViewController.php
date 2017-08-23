@@ -7,11 +7,18 @@ class ViewController extends Controller
      * 视图：默认是 amazeUI
      */
 
-    protected static $pub = '/public-admin-manager/';
     //表单类型：1input-text，2input-file，3input-submit，4input-button，5select，6textarea，
     private static $types = [
         1=>'text','file','submit','button','select','textarea',
     ];
+
+    /**
+     * 模板文件根目录
+     */
+    public static function getPubPath()
+    {
+        return config('jiuge.pub');
+    }
 
     /**
      * 模板组合
@@ -22,7 +29,6 @@ class ViewController extends Controller
         $main = '';
         $main .= self::mainTop();
         $main .= self::top();
-//        $main .= self::bigContent($dataArr);
         if ($dataArr['view']=='index') {
             $main .= self::indexlist($dataArr);
         } else if ($dataArr['view']=='create') {
@@ -42,20 +48,20 @@ class ViewController extends Controller
     /**
      * head层
      */
-    public static function mainTop($title='后台主页',$icon='favicon.ico')
+    public static function mainTop()
     {
         $html = '';
         $html .= '<!doctype html>';
         $html .= '<html class="no-js fixed-layout">';
         $html .= '<head>';
         $html .= '<meta charset="utf-8">';
-        $html .= '<title>'.$title.'</title>';
-        $html .= '<link rel="icon" type="image/png" href="'.$icon.'">';
-        $html .= '<link rel="stylesheet" href="'.self::$pub.'css/amazeui.min.css"/>';
-        $html .= '<link rel="stylesheet" href="'.self::$pub.'css/admin.css">';
-        $html .= '<link rel="stylesheet" href="'.self::$pub.'css/admin_cus.css">';
-        $html .= '<link rel="stylesheet" type="text/css" href="'.self::$pub.'css/video.css">';
-        $html .= '<script src="'.self::$pub.'js/jquery-1.10.2.min.js"></script>';
+        $html .= '<title>'.config('jiuge.title').'</title>';
+        $html .= '<link rel="icon" type="image/png" href="'.config('jiuge.icon').'">';
+        $html .= '<link rel="stylesheet" href="'.self::getPubPath().'css/amazeui.min.css"/>';
+        $html .= '<link rel="stylesheet" href="'.self::getPubPath().'css/admin.css">';
+        $html .= '<link rel="stylesheet" href="'.self::getPubPath().'css/admin_cus.css">';
+        $html .= '<link rel="stylesheet" type="text/css" href="'.self::getPubPath().'css/video.css">';
+        $html .= '<script src="'.self::getPubPath().'js/jquery-1.10.2.min.js"></script>';
         $html .= '</head>';
         $html .= '<body>';
         $html .= '';
@@ -90,74 +96,40 @@ class ViewController extends Controller
         return $html;
     }
 
-//    /**
-//     * 内容层：菜单 + content + footer
-//     */
-//    public static function bigContent($dataArr)
-//    {
-//        $html = '';
-//        $html .= '<div class="am-cf admin-main">';
-//        $html .= '<div class="admin-sidebar am-offcanvas" id="admin-offcanvas">';
-//        $html .= '<div class="am-offcanvas-bar admin-offcanvas-bar">';
-//        $html .= self::leftMenu();
-//        $html .= '</div>';
-//        $html .= '</div>';
-//        $html .= '<div class="admin-content">';
-//        //面包屑
-//        $html .= '<div class="am-g"><div class="am-cf am-padding"><div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"> '.$dataArr['crumbs']['module'].'</strong> / <strong class="am-text-primary am-text-lg"> '.$dataArr['crumbs']['func']['name'].'</strong></div></div></div><hr/>';
-//        //管理员信息
-//        if ($dataArr['view']!='index') {
-//            $html .= '<div class="am-u-sm-12 am-u-md-4 am-u-md-push-8"><div class="am-panel am-panel-default"><div class="am-panel-bd"><div class="user-info"><p class="user-info-order">管理员名称：<strong>管理员</strong></p><p class="user-info-order">所在角色组：<strong>角色</strong></p><p class="user-info-order">最近登陆时间：<strong>时间</strong></p></div></div></div></div>';
-//        }
-//        //拼接表单
-//        $html .= '<div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">';
-//        if ($dataArr['view']=='index') {
-//            $html .= self::indexlist($dataArr['prefix'],$dataArr['crumbs']);
-//        } else if ($dataArr['view']=='show') {
-//            $html .= self::show();
-//        } else if ($dataArr['view']=='create') {
-////            $html .= self::create($dataArr['selArr'],$dataArr['optionArr']);
-//            $html .= "<form action='".self::$action."' class='am-form' method='POST' enctype='multipart/form-data'>";
-//            $html .= csrf_field();
-//            $html .= "<fieldset>";
-//            foreach ($dataArr['selArr'] as $v) {
-//                $html .= self::setElement($v[0],$v[1],$v[2],$v[3],$v[4],$dataArr['optionArr']);
-//            }
-//            $html .= "<button type='button' class='am-btn am-btn-primary' onclick='history.go(-1);'>返回</button> <button type='submit' class='am-btn am-btn-primary'>保存添加</button>";
-//            $html .= "</fieldset>";
-//            $html .= "</form>";
-//        } else if ($dataArr['view']=='edit') {
-//            $html .= self::edit();
-//        } else {
-//            $html .= '没有';
-//        }
-//        $html .= '</div>';
-//        $html .= '<footer><hr/><p class="am-padding-left list_center">你的页脚信息。</p></footer>';
-//        $html .= '</div>';
-//        $html .= '</div>';
-//        $html .= '';
-//        return $html;
-//    }
-
     /**
      * 左边菜单层
      */
-    public static function leftMenu()
+    public static function leftMenu($leftMenus)
     {
         $html = '';
         $html .= '<ul class="am-list admin-sidebar-list">';
         $html .= '<li class="admin-parent">';
-        $html .= '<a class="am-cf" data-am-collapse="{target: \'#collapse-nav\'}" onclick="toggle()"><span class="am-icon-file"></span>  权限管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>';
-        $html .= '<ul class="am-list am-collapse admin-sidebar-sub am-out" id="collapse-nav">';
-        $html .= '<li><a href="/admin/admin" class="am-cf"><span class="am-icon-check"></span> 管理员 <span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>';
-        $html .= '<li><a href="/admin/role" class="am-cf"><span class="am-icon-check"></span> 角色 <span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>';
-        $html .= '<li><a href="/admin/action" class="am-cf"><span class="am-icon-check"></span> 操作 <span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>';
-        $html .= '</ul>';
+        if (count($leftMenus)) {
+            foreach ($leftMenus as $leftMenu) {
+                $html .= '<a class="am-cf" data-am-collapse="{target: \'#collapse-nav\'}" onclick="toggle('.$leftMenu['id'].')"><span class="am-icon-file"></span>  '.$leftMenu['name'].' <span class="am-icon-angle-right am-fr am-margin-right"></span></a>';
+                if (count($leftMenu['subs'])) {
+                    $html .= '<ul class="am-list am-collapse admin-sidebar-sub am-out" id="collapse-nav'.$leftMenu['id'].'">';
+                    foreach ($leftMenu['subs'] as $sub) {
+                        $html .= '<li><a href="'.$sub['url'].'" class="am-cf"><span class="am-icon-check"></span> '.$sub['name'].' <span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>';
+                    }
+                    $html .= '</ul>';
+                }
+            }
+        } else {
+            $html .= '<a class="am-cf" data-am-collapse="{target: \'#collapse-nav\'}" onclick="toggle(0)"><span class="am-icon-file"></span>  权限管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>';
+            $html .= '<ul class="am-list am-collapse admin-sidebar-sub am-out" id="collapse-nav0">';
+            $html .= '<li><a href="/admin/admin" class="am-cf"><span class="am-icon-check"></span> 管理员 <span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>';
+            $html .= '<li><a href="/admin/role" class="am-cf"><span class="am-icon-check"></span> 角色列表 <span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>';
+            $html .= '<li><a href="/admin/action" class="am-cf"><span class="am-icon-check"></span> 操作列表 <span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>';
+            $html .= '<li><a href="/admin/roleaction" class="am-cf"><span class="am-icon-check"></span> 权限操作 <span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>';
+            $html .= '</ul>';
+        }
         $html .= '</li>';
         $html .= '</ul>';
         $html .= '<script>';
-        $html .= 'function toggle(){';
-        $html .= '$("#collapse-nav").toggle(200);';
+        $html .= 'function toggle(id){';
+        $html .= 'console.log(id);';
+        $html .= '$("#collapse-nav"+id).toggle(200);';
         $html .= '}';
         $html .= '</script>';
         $html .= '<div class="am-panel am-panel-default admin-sidebar-panel"><div class="am-panel-bd"><p><span class="am-icon-bookmark"></span> 公告</p><p>时光静好，与君语；细水流年，与君同。—— Amaze UI</p></div></div>';
@@ -179,14 +151,12 @@ class ViewController extends Controller
         $html .= '<div class="am-cf admin-main">';
         $html .= '<div class="admin-sidebar am-offcanvas" id="admin-offcanvas">';
         $html .= '<div class="am-offcanvas-bar admin-offcanvas-bar">';
-        $html .= self::leftMenu();
+        $html .= self::leftMenu($dataArr['leftMenus']);
         $html .= '</div>';
         $html .= '</div>';
         $html .= '<div class="admin-content">';
         //面包屑
-        $html .= '<div class="am-g"><div class="am-cf am-padding"><div class="am-fl am-cf">';
-        $html .= '<strong class="am-text-primary am-text-lg"> XX管理 </strong>';
-        $html .= '</div></div></div><hr/>';
+        $html .= '<div class="am-g"><div class="am-cf am-padding"><div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"> '.$crumbs['module'].'</strong> / <strong class="am-text-primary am-text-lg"> '.$crumbs['func']['name'].'</strong></div></div></div><hr/>';
         //菜单
         $html .= '<div class="am-g"><div class="am-u-sm-12 am-u-md-6"><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><a href="'.$prefix.'/create"><button type="button" class="am-btn am-btn-default"> 添加'.$crumbs['func']['name'].' </button></a></div></div></div>';
         //列表
@@ -199,7 +169,7 @@ class ViewController extends Controller
         foreach ($indexArr as $key=>$value) {
             $html .= '<th class="table-type">'.$value.'</th>';
         }
-        $html .= '<th class="table-type">创建时间</th><th class="table-date am-hide-sm-only">操作</th></tr>';
+        $html .= '<th class="table-date am-hide-sm-only">操作</th></tr>';
         $html .= '</thead>';
         $html .= '<tbody>';
         if (count($datas)) {
@@ -209,17 +179,15 @@ class ViewController extends Controller
                 foreach ($indexArr as $k=>$v) {
                     $html .= '<td class="am-hide-sm-only">'.$data[$k].'</td>';
                 }
-                $html .= '<td class="am-hide-sm-only">'.$data['createTime'].'</td>';
-                $html .= '<td class="am-hide-sm-only"><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><a href="'.$prefix.'/show?id='.$data['id'].'"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="'.self::$pub.'images/show.png" class="icon"> 查看</button></a><a href="javascript:;" onclick="getEdit('.$data['id'].')"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="'.self::$pub.'images/show.png" class="icon"> 编辑</button></a></div></div></td>';
+                $html .= '<td class="am-hide-sm-only"><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs">';
+                $html .= '<a href="'.$prefix.'/show?id='.$data['id'].'"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="'.self::getPubPath().'images/show.png" class="icon"> 查看</button></a> ';
+                $html .= '<a href="'.$prefix.'/edit?id='.$data['id'].'"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="'.self::getPubPath().'images/show.png" class="icon"> 编辑</button></a>';
+                $html .= '</div></div></td>';
                 $html .= '</tr>';
             }
         } else {
             $html .= '<tr>';
-            $html .= '<td class="am-hide-sm-only"><input type="checkbox" /></td>';
-            $html .= '<td class="am-hide-sm-only">id</td>';
-            $html .= '<td class="am-hide-sm-only">名称</td>';
-            $html .= '<td class="am-hide-sm-only">时间</td>';
-            $html .= '<td class="am-hide-sm-only"><div class="am-btn-toolbar"><div class="am-btn-group am-btn-group-xs"><a href="javascript:;"><button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><img src="'.self::$pub.'images/show.png" class="icon"> 查看</button></a></div></div></td>';
+            $html .= '<td class="am-hide-sm-only" colspan="20" style="text-align:center;">没有'.$crumbs['func']['name'].'</td>';
             $html .= '</tr>';
         }
         $html .= '</tbody>';
@@ -257,7 +225,7 @@ class ViewController extends Controller
         $html .= '<div class="am-cf admin-main">';
         $html .= '<div class="admin-sidebar am-offcanvas" id="admin-offcanvas">';
         $html .= '<div class="am-offcanvas-bar admin-offcanvas-bar">';
-        $html .= self::leftMenu();
+        $html .= self::leftMenu($dataArr['leftMenus']);
         $html .= '</div>';
         $html .= '</div>';
         $html .= '<div class="admin-content">';
@@ -297,12 +265,11 @@ class ViewController extends Controller
         $selArr = $dataArr['selArr'];
         $optionArr = $dataArr['optionArr'];
         $data = $dataArr['data'];
-        $view = $dataArr['view'];
         $html = '';
         $html .= '<div class="am-cf admin-main">';
         $html .= '<div class="admin-sidebar am-offcanvas" id="admin-offcanvas">';
         $html .= '<div class="am-offcanvas-bar admin-offcanvas-bar">';
-        $html .= self::leftMenu();
+        $html .= self::leftMenu($dataArr['leftMenus']);
         $html .= '</div>';
         $html .= '</div>';
         $html .= '<div class="admin-content">';
@@ -313,13 +280,13 @@ class ViewController extends Controller
         $html .= '<div class="am-u-sm-12 am-u-md-4 am-u-md-push-8"><div class="am-panel am-panel-default"><div class="am-panel-bd"><div class="user-info"><p class="user-info-order">管理员名称：<strong>管理员</strong></p><p class="user-info-order">所在角色组：<strong>角色</strong></p><p class="user-info-order">最近登陆时间：<strong>时间</strong></p></div></div></div></div>';
         //拼接表单
         $html .= "<div class=\"am-u-sm-12 am-u-md-8 am-u-md-pull-4\">";
-        $html .= "<form action='".$prefix."/modify' class='am-form' method='POST' enctype='multipart/form-data'>";
+        $html .= '<form action="'.$prefix.'/modify?id='.$data['id'].'" class="am-form" method="POST" enctype="multipart/form-data">';
         $html .= csrf_field();
         $html .= '<input type="hidden" name="_method" value="POST"/>';
         $html .= '<input type="hidden" name="id" value="'.$data['id'].'"/>';
         $html .= "<fieldset>";
         foreach ($selArr as $v) {
-            $html = $html . self::setElement($v[0],$v[1],$v[2],$v[3],$v[4],$optionArr,$view);
+            $html .= self::setElement($v[0],$v[1],$v[2],$v[3],$v[4],$optionArr,$data);
         }
         $html .= "<button type='button' class='am-btn am-btn-primary' onclick='history.go(-1);'>返回</button> <button type='submit' class='am-btn am-btn-primary'>保存修改</button>";
         $html .= "</fieldset>";
@@ -337,12 +304,37 @@ class ViewController extends Controller
     /**
      * 动态内容详情层
      */
-    public static function show()
+    public static function show($dataArr)
     {
+        $crumbs = $dataArr['crumbs'];
+        $data = $dataArr['data'];
+        $showArr = $dataArr['showArr'];
         $html = '';
-        $html .= '';
-        $html .= '';
-        $html .= '';
+        $html .= '<div class="am-cf admin-main">';
+        $html .= '<div class="admin-sidebar am-offcanvas" id="admin-offcanvas">';
+        $html .= '<div class="am-offcanvas-bar admin-offcanvas-bar">';
+        $html .= self::leftMenu($dataArr['leftMenus']);
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '<div class="admin-content">';
+        //面包屑
+        $html .= '<div class="am-g"><div class="am-cf am-padding"><div class="am-fl am-cf"><strong class="am-text-primary am-text-lg"> '.$crumbs['module'].'</strong> / <strong class="am-text-primary am-text-lg"> '.$crumbs['func']['name'].'</strong></div></div></div><hr/>';
+        //管理员信息
+        $html .= '<div class="am-g">';
+        $html .= '<div class="am-u-sm-12 am-u-md-4 am-u-md-push-8"><div class="am-panel am-panel-default"><div class="am-panel-bd"><div class="user-info"><p class="user-info-order">管理员名称：<strong>管理员</strong></p><p class="user-info-order">所在角色组：<strong>角色</strong></p><p class="user-info-order">最近登陆时间：<strong>时间</strong></p></div></div></div></div>';
+        //拼接详情页面
+        $html .= "<div class=\"am-u-sm-12 am-u-md-8 am-u-md-pull-4\">";
+        $html .= "<table class=\"am-table am-table-striped am-table-hover table-main\">";
+        $html .= "<tbody id=\"tbody-alert\">";
+        foreach ($showArr as $k=>$v) {
+            $html .= "<tr><td class=\"am-hide-sm-only\">".$v." / ".ucfirst($k)."：</td>";
+            $html .= "<td width='500'>".$data[$k]."</td></tr>";
+        }
+        $html .= "</tbody>";
+        $html .= "</table>";
+        $html .= "<button type=\"button\" class=\"am-btn am-btn-primary\" onclick=\"history.go(-1);\">返回</button>";
+        $html .= '</div>';
+        $html .= '</div>';
         $html .= '';
         return $html;
     }
@@ -353,9 +345,9 @@ class ViewController extends Controller
     public static function mainBottom()
     {
         $html = '';
-        $html .= '<script src="'.self::$pub.'js/jquery.js"></script>';
-        $html .= '<script src="'.self::$pub.'js/amazeui.js"></script>';
-        $html .= '<script src="'.self::$pub.'js/app.js"></script>';
+        $html .= '<script src="'.self::getPubPath().'js/jquery.js"></script>';
+        $html .= '<script src="'.self::getPubPath().'js/amazeui.js"></script>';
+        $html .= '<script src="'.self::getPubPath().'js/app.js"></script>';
         $html .= '</body>';
         $html .= '</html>';
         $html .= '';

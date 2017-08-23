@@ -3,6 +3,7 @@ namespace JiugeTo\AuthAdminManager\Controllers;
 
 use App\Http\Controllers\Controller as BaseController;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use JiugeTo\AuthAdminManager\Models\ActionModel;
 
 class Controller extends BaseController
 {
@@ -37,5 +38,21 @@ class Controller extends BaseController
                 'msg' => '未知错误！',
             );
         }
+    }
+
+    /**
+     * 获取左侧菜单列表
+     */
+    public static function getLeftMenus()
+    {
+        $actionArr = array();
+        $actions = ActionModel::where('pid',0)->where('del',0)->get();
+        if (!count($actions)) { return '没有操作！'; }
+        foreach ($actions as $k=>$action) {
+            $actionArr[$k]['id'] = $action->id;
+            $actionArr[$k]['name'] = $action->name;
+            $actionArr[$k]['subs'] = $action->getSubsByPid();
+        }
+        return $actionArr;
     }
 }

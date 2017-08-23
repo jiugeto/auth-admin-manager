@@ -11,4 +11,10 @@ class AdminModel extends Model
     protected $fillable = [
         'id','name','role','password','created_at','updated_at',
     ];
+
+    public function getRoleName()
+    {
+        $roleModel = RoleModel::find($this->role);
+        return $roleModel ? $roleModel->name : '';
+    }
 }

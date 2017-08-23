@@ -23,6 +23,18 @@ class ActionController extends Controller
         array(5,'左侧显示','left_show','左侧显示',6),
     );
     protected static $formIndexArr = array(
+        'id' => 'ID',
+        'name' => '操作名称',
+//        'namespace' => '命名空间',
+        'controller' => '控制器',
+        'url' => '路由',
+        'action' => '方法',
+        'parentName' => '父级名称',
+        'leftShowName' => '左侧是否显示',
+        'createTime' => '创建时间',
+    );
+    protected static $formShowArr = array(
+        'id' => 'ID',
         'name' => '操作名称',
         'namespace' => '命名空间',
         'controller' => '控制器',
@@ -46,10 +58,10 @@ class ActionController extends Controller
             }
             $total = $models->total();
         }
-//        $datas->limit = self::$limit;
         $dataArr = array(
             'prefix' => $shares['prefix'],
             'crumbs' => $shares['crumbs'],
+            'leftMenus' => self::getLeftMenus(),
             'datas' => $datas,
             'indexArr' => self::$formIndexArr,
             'view' => 'index',
@@ -63,6 +75,7 @@ class ActionController extends Controller
         $dataArr = array(
             'prefix' => $shares['prefix'],
             'crumbs' => $shares['crumbs'],
+            'leftMenus' => self::getLeftMenus(),
             'selArr' => self::$formElementArr,
             'optionArr' => array(
                 'pid' => self::getParents(),
@@ -85,11 +98,11 @@ class ActionController extends Controller
 
     public static function edit()
     {
-        dd(Input::all());
         $shares = self::getShare();
         $dataArr = array(
             'prefix' => $shares['prefix'],
             'crumbs' => $shares['crumbs'],
+            'leftMenus' => self::getLeftMenus(),
             'selArr' => self::$formElementArr,
             'optionArr' => array(
                 'pid' => self::getParents(),
@@ -117,8 +130,10 @@ class ActionController extends Controller
         $dataArr = array(
             'prefix' => $shares['prefix'],
             'crumbs' => $shares['crumbs'],
-            'view' => 'show',
+            'leftMenus' => self::getLeftMenus(),
+            'showArr' => self::$formShowArr,
             'data' => self::getModelById(Input::get('id')),
+            'view' => 'show',
         );
         return View::index($dataArr);
     }
@@ -161,7 +176,7 @@ class ActionController extends Controller
     {
         return array(
             'id' => $model->id,
-            'name' => $model->id,
+            'name' => $model->name,
             'namespace' => $model->namespace,
             'controller' => $model->controller,
             'url' => $model->url,
