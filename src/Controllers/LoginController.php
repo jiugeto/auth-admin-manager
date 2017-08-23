@@ -4,7 +4,7 @@ namespace JiugeTo\AuthAdminManager\Controllers;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use JiugeTo\AuthAdminManager\Models\AdminModel;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Hashing\BcryptHasher as Hash;
 
 class LoginController extends Controller
 {
@@ -19,7 +19,7 @@ class LoginController extends Controller
         $pub = config('jiuge.pub');
         $loginUserName = config('jiuge.loginUserName');
         $loginPwd = config('jiuge.loginPwd');
-        $loginUrl = config('jiuge.loginUrl');
+        $adminUrl = config('jiuge.adminUrl');
         $html = '';
         //head
         $html .= '<!DOCTYPE html><html lang="en">';
@@ -40,7 +40,7 @@ class LoginController extends Controller
         $html .= '<div class="container-fluid"><div class="row">
         <div class="col-md-8 col-md-offset-2"><div class="panel panel-default"><div class="panel-heading">登录</div><div class="panel-body">';
         //表单
-        $html .= '<form class="form-horizontal" role="form" method="POST" action="'.$loginUrl.'"><input type="hidden" name="_token" value="'.csrf_token().'"><input type="hidden" name="_method" value="POST">';
+        $html .= '<form class="form-horizontal" role="form" method="POST" action="'.$adminUrl.'/dologin"><input type="hidden" name="_token" value="'.csrf_token().'"><input type="hidden" name="_method" value="POST">';
         $html .= '<div class="form-group"><label class="col-md-4 control-label">'.$loginUserName.'</label><div class="col-md-6"><input type="text" class="form-control" placeholder="5-10字母数字组合" pattern="^[0-9a-zA-Z]{5,10}$" required name="name"></div></div>';
         $html .= '<div class="form-group"><label class="col-md-4 control-label">'.$loginPwd.'</label><div class="col-md-6"><input type="password" class="form-control" placeholder="5-20字母数字组合" pattern="^[0-9a-zA-Z]{5,20}$" required name="pwd"></div></div>';
         $html .= '<div class="form-group"><div class="col-md-6 col-md-offset-4"><button type="submit" class="btn btn-primary"> 登 录 </button></div></div>';
@@ -52,7 +52,7 @@ class LoginController extends Controller
 
     public static function doLogin()
     {
-        $adminurl = config('jiuge.adminUrl');
+        $adminUrl = config('jiuge.adminUrl');
         $data = Input::all();
         if (!$data['name'] || !$data['pwd']) {
             echo "<script>alert('信息未填写完整！');history.go(-1);</script>";exit;
@@ -61,7 +61,9 @@ class LoginController extends Controller
         if (!$model) {
             echo "<script>alert('该管理员不存在！');history.go(-1);</script>";exit;
         }
-        if (!(Hash::check($data['pwd'],$model->password))) {
+        $hash = new Hash();
+//        dd($hash->check('123456',$hash->make('123456')));
+        if (!($hash->check($data['pwd'],$model->password))) {
             echo "<script>alert('密码错误！');history.go(-1);</script>";exit;
         }
         Session::put('admin',array(
@@ -71,13 +73,13 @@ class LoginController extends Controller
             'roleName' => $model->getRoleName(),
             'createTime' => $model->createTime(),
         ));
-        return redirect($adminurl);
+        return redirect(adminUrl);
     }
 
     public static function doLogout()
     {
-        $loginUrl = config('jiuge.loginUrl');
+        $adminUrl = config('jiuge.adminUrl');
         Session::forget('admin');
-        return redirect($loginUrl);
+        return redirect($adminUrl.'/login');
     }
 }

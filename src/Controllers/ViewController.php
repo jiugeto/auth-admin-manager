@@ -1,6 +1,8 @@
 <?php
 namespace JiugeTo\AuthAdminManager\Controllers;
 
+use Illuminate\Support\Facades\Session;
+
 class ViewController extends Controller
 {
     /**
@@ -73,14 +75,17 @@ class ViewController extends Controller
      */
     public static function top()
     {
+        $adminUrl = config('jiuge.adminUrl');
         $html = '';
         $html .= '<header class="am-topbar admin-header">';
         $html .= '<div class="am-topbar-brand"><strong>您的后台</strong><small>管理中心</small></div>';
         $html .= '<button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: \'#topbar-collapse\'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>';
         $html .= '<div class="am-collapse am-topbar-collapse" id="topbar-collapse"><ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">';
         $html .= '<li class="am-dropdown" data-am-dropdown>';
-        $html .= '<a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;"><span class="am-icon-users"> 管理员名称 </span><span class="am-icon-caret-down"></span></a>';
-        $html .= '<ul class="am-dropdown-content head"><li><a href="#"><span class="am-icon-user"></span> 资料</a></li><li><a href="#"><span class="am-icon-cog"></span> 设置</a></li><li><a href="javascript:;"><span class="am-icon-power-off"></span> 退出</a></li></ul>';
+        $html .= '<a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;"><span class="am-icon-users"> ';
+        $html .= Session::has('admin')?Session::get('admin.name'):'管理员名称';
+        $html .= ' &nbsp;</span><span class="am-icon-caret-down"></span></a>';
+        $html .= '<ul class="am-dropdown-content head"><li><a href="#"><span class="am-icon-user"></span> 资料</a></li><li><a href="#"><span class="am-icon-cog"></span> 设置</a></li><li><a href="'.$adminUrl.'/logout"><span class="am-icon-power-off"></span> 退出</a></li></ul>';
         $html .= '</li>';
         $html .= '<li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>';
         $html .= '</ul></div>';

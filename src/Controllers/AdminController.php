@@ -3,9 +3,10 @@ namespace JiugeTo\AuthAdminManager\Controllers;
 
 use JiugeTo\AuthAdminManager\Models\AdminModel;
 use JiugeTo\AuthAdminManager\Models\RoleModel;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Hashing\BcryptHasher as Hash;
 use JiugeTo\AuthAdminManager\Controllers\ViewController as View;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
@@ -176,12 +177,13 @@ class AdminController extends Controller
         if (!$model) {
             echo "<script>alert('记录不存在！');history.go(-1);</script>";exit;
         }
-        if (!(Hash::check($data['pwd'],$model->password))) {
+        $hash = new Hash();
+        if (!($hash->check($data['pwd'],$model->password))) {
             echo "<script>alert('密码错误！');history.go(-1);</script>";exit;
         }
         AdminModel::where('id',$data['id'])
             ->update(array(
-                'password' => Hash::make($data['pwd2']),
+                'password' => $hash->make($data['pwd2']),
                 'updated_at' => time(),
             ));
         $shares = self::getShare();
