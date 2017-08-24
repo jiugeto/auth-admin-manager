@@ -55,7 +55,7 @@ class AdminMiddle
     public function handle($request, Closure $next)
     {
         //登陆判断
-        if (!Session::has('cul_admin')) {
+        if (!Session::has('admin')) {
             return redirect(env('DOMAIN').'/culadmin/login');
         }
         $this->getAuthLimit();//权限开关
@@ -89,7 +89,7 @@ class AdminMiddle
      */
     public function getCurrAuths()
     {
-        $role = Session::get('cul_admin.role');
+        $role = Session::get('admin.role');
         $roleModels = RoleActionModel::where('role',$role)
             ->where('del',0)
             ->get();
