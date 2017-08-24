@@ -47,6 +47,7 @@ class ActionController extends Controller
 
     public static function index()
     {
+        self::getCommon();
         $shares = self::getShare();
         $datas = array();
         $models = ActionModel::paginate(self::$limit);
@@ -71,6 +72,7 @@ class ActionController extends Controller
 
     public static function create()
     {
+        self::getCommon();
         $shares = self::getShare();
         $dataArr = array(
             'prefix' => $shares['prefix'],
@@ -88,6 +90,7 @@ class ActionController extends Controller
 
     public static function store()
     {
+        self::getCommon();
         $shares = self::getShare();
         $data = self::getData();
         $data['created_at'] = time();
@@ -98,6 +101,7 @@ class ActionController extends Controller
 
     public static function edit()
     {
+        self::getCommon();
         $shares = self::getShare();
         $dataArr = array(
             'prefix' => $shares['prefix'],
@@ -116,6 +120,7 @@ class ActionController extends Controller
 
     public static function update()
     {
+        self::getCommon();
         $shares = self::getShare();
         $model = self::getModelById(Input::get('id'));
         $data = self::getData();
@@ -126,6 +131,7 @@ class ActionController extends Controller
 
     public static function show()
     {
+        self::getCommon();
         $shares = self::getShare();
         $dataArr = array(
             'prefix' => $shares['prefix'],
@@ -226,5 +232,13 @@ class ActionController extends Controller
     {
         $model = new ActionModel();
         return $model['leftShows'];
+    }
+
+    /**
+     * 公用方法
+     */
+    public static function getCommon()
+    {
+        self::isLogin();
     }
 }

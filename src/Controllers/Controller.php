@@ -4,6 +4,9 @@ namespace JiugeTo\AuthAdminManager\Controllers;
 use App\Http\Controllers\Controller as BaseController;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use JiugeTo\AuthAdminManager\Models\ActionModel;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+use JiugeTo\AuthAdminManager\Models\RoleActionModel;
 
 class Controller extends BaseController
 {
@@ -54,5 +57,57 @@ class Controller extends BaseController
             $actionArr[$k]['subs'] = $action->getSubsByPid();
         }
         return $actionArr;
+    }
+
+    /**
+     * 判断登陆、权限
+     */
+    public static function isLogin()
+    {
+        if (!Session::has('admin')) {
+            echo "<script>alert('没有登陆！');window.location.href='".config('jiuge.adminUrl')."/login"."';</script>";exit;
+        }
+        self::getAuthLimit();//权限开关
+    }
+
+    /**
+     * 限制当前的操作
+     */
+    public static function getAuthLimit()
+    {
+        //获取当前控制器、方法
+        $action = Route::current()->getActionName();
+        list($class, $method) = explode('@', $action);
+        $prefix = $class.'-'.$method;
+        //获取当前操作列表
+        $actions = self::getCurrAuths();
+        $actionArr = array();
+        if (count($actions)) {
+            foreach ($actions as $action) {
+                $actionArr[] = $action->namespace.'\\'.$action->controller.'-'.$action->action;
+            }
+        }
+//        dd($prefix,$actionArr);
+        if (!in_array($prefix,$actionArr)) {
+            echo "<script>alert('你没有权限！');history.go(-1);</script>";exit;
+        }
+    }
+
+    /**
+     * 操作权限控制
+     */
+    public static function getCurrAuths()
+    {
+        $role = Session::get('admin.role');
+        $roleActions = RoleActionModel::where('role',$role)
+            ->where('del',0)
+            ->get();
+        $actionIdArr = array();
+        foreach ($roleActions as $roleAction) {
+            $actionIdArr[] = $roleActions->action;
+        }
+        return ActionModel::whereIn('id',$actionIdArr)
+            ->where('del',0)
+            ->get();
     }
 }

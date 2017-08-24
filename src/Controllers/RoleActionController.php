@@ -28,6 +28,7 @@ class RoleActionController extends Controller
 
     public static function index()
     {
+        self::getCommon();
         $shares = self::getShare();
         $datas = array();
         $roles = RoleModel::all();
@@ -55,6 +56,7 @@ class RoleActionController extends Controller
 
     public static function show()
     {
+        self::getCommon();
         $shares = self::getShare();
         $role = RoleModel::find(Input::get('id'));
         if (!$role) { return '不存在当前角色！'; }
@@ -86,6 +88,7 @@ class RoleActionController extends Controller
      */
     public static function getShowHtml($dataArr)
     {
+        self::getCommon();
         $crumbs = $dataArr['crumbs'];
         $role = $dataArr['role'];
         $actions = $dataArr['actions'];
@@ -151,6 +154,7 @@ class RoleActionController extends Controller
      */
     public static function check()
     {
+        self::getCommon();
         $value = Input::get('value');
         $datas = explode('-',$value);
         $id = $datas[0];
@@ -292,5 +296,13 @@ class RoleActionController extends Controller
             }
         }
         return $actionArr;
+    }
+
+    /**
+     * 公用方法
+     */
+    public static function getCommon()
+    {
+        self::isLogin();
     }
 }

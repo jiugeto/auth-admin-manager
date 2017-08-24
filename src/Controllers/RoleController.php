@@ -29,6 +29,7 @@ class RoleController extends Controller
 
     public static function index()
     {
+        self::getCommon();
         $shares = self::getShare();
         $datas = array();
         $models = RoleModel::paginate(self::$limit);
@@ -54,6 +55,7 @@ class RoleController extends Controller
 
     public static function create()
     {
+        self::getCommon();
         $shares = self::getShare();
         $dataArr = array(
             'prefix' => $shares['prefix'],
@@ -68,6 +70,7 @@ class RoleController extends Controller
 
     public static function store()
     {
+        self::getCommon();
         $shares = self::getShare();
         $data = self::getData();
         $data['created_at'] = time();
@@ -77,6 +80,7 @@ class RoleController extends Controller
 
     public static function edit()
     {
+        self::getCommon();
         $shares = self::getShare();
         $dataArr = array(
             'prefix' => $shares['prefix'],
@@ -92,6 +96,7 @@ class RoleController extends Controller
 
     public static function update()
     {
+        self::getCommon();
         $shares = self::getShare();
         $model = self::getModelById(Input::get('id'));
         $data = self::getData();
@@ -102,6 +107,7 @@ class RoleController extends Controller
 
     public static function show()
     {
+        self::getCommon();
         $shares = self::getShare();
         $dataArr = array(
             'prefix' => $shares['prefix'],
@@ -163,5 +169,13 @@ class RoleController extends Controller
             'prefix' => self::$prefix,
             'crumbs' => self::$crumbs,
         );
+    }
+
+    /**
+     * 公用方法
+     */
+    public static function getCommon()
+    {
+        self::isLogin();
     }
 }

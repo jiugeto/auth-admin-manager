@@ -28,3 +28,79 @@ php artisan optimize
 `include_once('../vendor/jiugeto/auth-admin-manager/src/Route/AdminManagerRoute.php');`
 - 将 /vendor/jiugeto/auth-admin-manager/config/jiuge.php 拷贝到 /config/ 下面
 - 将 /vendor/jiugeto/auth-admin-manager/public-admin-manager 拷贝到 /public 下面
+- 安装 laravel-ide-helper 后，在话题每个自定义控制器：`use JiugeTo\AuthAdminManager\Controllers\ViewController as View;`
+- 这样就可以在构造方法中共享后台左侧菜单的数据了： `view()->share('leftMenus',View::getLeftMenus());`
+- 默认账户：admin；密码：123456，登陆后请自行修改。
+- 请添加登陆权限中间件，路由组中：`'middleware' => ['web','admin'],`
+- 在 /app/Http/Middleware/ 目录下：`AdminMiddle.php`
+```sql
+<?php
+namespace App\Http\Middleware;
+
+use Closure;
+use Session;
+use JiugeTo\AuthAdminManager\Models\ActionModel;
+use Illuminate\Support\Facades\Session;
+use JiugeTo\AuthAdminManager\Models\RoleActionModel;
+
+class AdminMiddle
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        //登陆判断
+        if (!Session::has('cul_admin')) {
+            return redirect(env('DOMAIN').'/culadmin/login');
+        }
+        $this->getAuthLimit();//权限开关
+        return $next($request);
+    }
+
+    /**
+     * 限制当前的操作
+     */
+    public function getAuthLimit()
+    {
+        //获取当前控制器、方法
+        $action = \Route::current()->getActionName();
+        list($class, $method) = explode('@', $action);
+        $prefix = $class.'-'.$method;
+        //获取当前操作列表
+        $actions = $this->getCurrAuths();
+        $actionArr = array();
+        if (count($actions)) {
+            foreach ($actions as $action) {
+                $actionArr[] = $action->namespace.'\\'.$action->controller.'-'.$action->action;
+            }
+        }
+        if (!in_array($prefix,$actionArr)) {
+            echo "<script>alert('你没有权限！');history.go(-1);</script>";exit;
+        }
+    }
+
+    /**
+     * 操作权限控制
+     */
+    public function getCurrAuths()
+    {
+        $role = Session::get('cul_admin.role');
+        $roleModels = RoleActionModel::where('role',$role)
+            ->where('del',0)
+            ->get();
+        $actionIdArr = array();
+        foreach ($roleModels as $roleModel) {
+            $actionIdArr[] = $roleModel->action;
+        }
+        return ActionModel::whereIn('id',$actionIdArr)
+            ->where('del',0)
+            ->get();
+    }
+}
+```
+- 然后在 /app/Http/Kernel.php 中，$routeMiddleware 下面添加：`'admin' => \App\Http\Middleware\AdminMiddle::class,`
