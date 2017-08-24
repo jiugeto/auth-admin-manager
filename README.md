@@ -28,7 +28,7 @@ php artisan optimize
 `include_once('../vendor/jiugeto/auth-admin-manager/src/Route/AdminManagerRoute.php');`
 - 将 /vendor/jiugeto/auth-admin-manager/config/jiuge.php 拷贝到 /config/ 下面
 - 将 /vendor/jiugeto/auth-admin-manager/public-admin-manager 拷贝到 /public 下面
-- 安装 laravel-ide-helper 后，在话题每个自定义控制器：`use JiugeTo\AuthAdminManager\Controllers\ViewController as View;`
+- 安装 laravel-ide-helper 后，在后台每个自定义控制器：`use JiugeTo\AuthAdminManager\Controllers\ViewController as View;`
 - 这样就可以在构造方法中共享后台左侧菜单的数据了： `view()->share('leftMenus',View::getLeftMenus());`
 - 默认账户：admin；密码：123456，登陆后请自行修改。
 - 请添加登陆权限中间件，路由组中：`'middleware' => ['web','admin'],`
