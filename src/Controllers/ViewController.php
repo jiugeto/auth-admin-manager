@@ -22,6 +22,27 @@ class ViewController extends Controller
         return config('jiuge.pub');
     }
 
+    public static function getIcon()
+    {
+        return config('jiuge.icon');
+    }
+
+    /**
+     * 公告
+     */
+    public static function getNotice()
+    {
+        return config('jiuge.notice');
+    }
+
+    /**
+     * wiki
+     */
+    public static function getWiki()
+    {
+        return config('jiuge.wiki');
+    }
+
     /**
      * 模板组合
      */
@@ -58,7 +79,7 @@ class ViewController extends Controller
         $html .= '<head>';
         $html .= '<meta charset="utf-8">';
         $html .= '<title>'.config('jiuge.title').'</title>';
-        $html .= '<link rel="icon" type="image/png" href="'.config('jiuge.icon').'">';
+        $html .= '<link rel="icon" type="image/png" href="'.self::getIcon().'">';
         $html .= '<link rel="stylesheet" href="'.self::getPubPath().'css/amazeui.min.css"/>';
         $html .= '<link rel="stylesheet" href="'.self::getPubPath().'css/admin.css">';
         $html .= '<link rel="stylesheet" href="'.self::getPubPath().'css/admin_cus.css">';
@@ -106,6 +127,8 @@ class ViewController extends Controller
      */
     public static function leftMenu($leftMenus)
     {
+        $notice = self::getNotice();
+        $wiki = self::getWiki();
         $html = '';
         $html .= '<ul class="am-list admin-sidebar-list">';
         $html .= '<li class="admin-parent">';
@@ -137,8 +160,8 @@ class ViewController extends Controller
         $html .= '$("#collapse-nav"+id).toggle(200);';
         $html .= '}';
         $html .= '</script>';
-        $html .= '<div class="am-panel am-panel-default admin-sidebar-panel"><div class="am-panel-bd"><p><span class="am-icon-bookmark"></span> 公告</p><p>时光静好，与君语；细水流年，与君同。—— Amaze UI</p></div></div>';
-        $html .= '<div class="am-panel am-panel-default admin-sidebar-panel"><div class="am-panel-bd"><p><span class="am-icon-tag"></span> wiki</p><p>Welcome to the Amaze UI wiki!</p></div></div>';
+        $html .= '<div class="am-panel am-panel-default admin-sidebar-panel"><div class="am-panel-bd"><p><span class="am-icon-bookmark"></span> '.$notice['name'].'</p><p>'.$notice['content'].'</p></div></div>';
+        $html .= '<div class="am-panel am-panel-default admin-sidebar-panel"><div class="am-panel-bd"><p><span class="am-icon-tag"></span> '.$wiki['name'].'</p><p>'.$wiki['content'].'</p></div></div>';
         $html .= '';
         return $html;
     }

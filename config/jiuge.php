@@ -13,4 +13,12 @@ return array(
     'loginPwd' => '管理员密码',
     'adminUrl' => '/admin',//后台路由
     'footer' => '你的页脚信息。',//页脚信息
+    'notice' => array(//公告信息
+        'name' => '公告',
+        'content' => '时光静好，与君语；细水流年，与君同。—— Amaze UI',
+    ),
+    'wiki' => array(
+        'name' => 'wiki',
+        'content' => 'Welcome to the Amaze UI wiki!',
+    ),
 );
