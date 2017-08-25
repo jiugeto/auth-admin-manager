@@ -17,5 +17,10 @@
         "psr-4": {
             "JiugeTo\\AuthAdminManager\\": "src/"
         }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
     }
 }
